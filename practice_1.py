@@ -118,20 +118,67 @@ def compute_height():
     height = 100
     result = 0
     for num in range(1, degree + 1):
-        result += height+height/2
+        result += height + height / 2
         height = height / 2
-    return result,height
+    return result, height
 
-#练习十三：猴子吃桃问题：猴子第一天摘下若干个桃子，当即吃了一半，还不瘾，又多吃了一个。
+
+# 练习十三：猴子吃桃问题：猴子第一天摘下若干个桃子，当即吃了一半，还不瘾，又多吃了一个。
 # 第二天早上又将剩下的桃子吃掉一半，又多吃了一个。
 # 以后每天早上都吃了前一天剩下的一半零一个。
 # 到第10天早上想再吃时，见只剩下一个桃子了。求第一天共摘了多少。
 def compute_peach():
     num = 1
-    for day in range(9,0,-1):
+    for day in range(9, 0, -1):
         x1 = (num + 1) * 2
         num = x1
     print(num)
+
+
+# 练习十四：统计文件中中英文单词出现的次数
+
+def compute_word():
+    word_count = {}
+    file_path = './practice_file/word'
+    with open(file_path, 'r') as fn:
+        for lines in fn:
+            line = lines[:-1]
+            words = line.split()
+            for word in words:
+                if word not in word_count:
+                    word_count[word] = 1
+                word_count[word] += 1
+    return word_count
+
+
+# 练习十五：统计指定目录下文件打小
+import os
+
+
+def compute_size():
+    file_size = {}
+    for file in os.listdir('.'):
+        if os.path.isfile(file):
+            file_size[file] = f'{os.path.getsize(file) / 1000}kb'
+    return file_size
+
+
+# 练习十六：按照文件的不同后缀汇总整理文件
+import shutil
+
+
+def file_tidying():
+    path = './arrange_file'
+    for file in os.listdir(path):
+        ext = os.path.splitext(file)[1]
+        ext = ext[1:]
+        if not os.path.isdir(f'{path}/{ext}'):
+            os.mkdir(f'{path}/{ext}')
+
+        source_path = f'{path}/{file}'
+        target_path = f'{path}/{ext}/{file}'
+        #移动文件
+        shutil.move(source_path, target_path)
 
 
 if __name__ == '__main__':
@@ -147,4 +194,7 @@ if __name__ == '__main__':
     # print(feb(10))
     # haskell()
     # print(compute_height())
-    compute_peach()
+    # compute_peach()
+    # print(sorted(compute_word().items(), reverse=True, key=lambda x: x[1])[:10])
+    # print(compute_size())
+    file_tidying()
