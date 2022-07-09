@@ -146,7 +146,7 @@ def compute_word():
             words = line.split()
             for word in words:
                 if word not in word_count:
-                    word_count[word] = 1
+                    word_count[word] = 0
                 word_count[word] += 1
     return word_count
 
@@ -177,8 +177,28 @@ def file_tidying():
 
         source_path = f'{path}/{file}'
         target_path = f'{path}/{ext}/{file}'
-        #移动文件
+        # 移动文件
         shutil.move(source_path, target_path)
+
+
+# 练习十七：计算文件中学生的分数，并计算出最大值、最小值、平均值
+
+def compute_student_score():
+    score_info = {}
+    with open('./practice_file/student_info') as fn:
+        for lines in fn:
+            line = lines[:-1]
+            course, name, score = line.split(',')
+            if course not in score_info:
+                score_info[course] = []
+            score_info[course].append(int(score))
+    for course,score in score_info.items():
+        print(
+            course,
+            max(score),
+            min(score),
+            sum(score)/len(score)
+        )
 
 
 if __name__ == '__main__':
@@ -197,4 +217,5 @@ if __name__ == '__main__':
     # compute_peach()
     # print(sorted(compute_word().items(), reverse=True, key=lambda x: x[1])[:10])
     # print(compute_size())
-    file_tidying()
+    # file_tidying()
+    compute_student_score()
