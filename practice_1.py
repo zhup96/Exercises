@@ -151,7 +151,7 @@ def compute_word():
     return word_count
 
 
-# 练习十五：统计指定目录下文件打小
+# 练习十五：统计指定目录下文件大小
 import os
 
 
@@ -181,7 +181,7 @@ def file_tidying():
         shutil.move(source_path, target_path)
 
 
-# 练习十七：计算文件中学生的分数，并计算出最大值、最小值、平均值
+# 练习十七：计算文件中学生的对应课程分数，并计算出最大值、最小值、平均值
 
 def compute_student_score():
     score_info = {}
@@ -192,13 +192,109 @@ def compute_student_score():
             if course not in score_info:
                 score_info[course] = []
             score_info[course].append(int(score))
-    for course,score in score_info.items():
+    for course, score in score_info.items():
         print(
             course,
             max(score),
             min(score),
-            sum(score)/len(score)
+            sum(score) / len(score)
         )
+
+
+# 练习十八：实现不同文件间建立联系
+def course_teacher():
+    course_teacher_grade = {}
+    with open('./practice_file/teacher_info') as fn:
+        for line in fn:
+            line = line[:-1]
+            course, name = line.split(',')
+            course_teacher_grade[course] = name
+
+    with open('./practice_file/student_info') as fn:
+        for line in fn:
+            line = line[:-1]
+            course, name, score = line.split(',')
+            teacher = course_teacher_grade.get(course)
+            print(
+                course,
+                teacher,
+                name,
+                score
+            )
+
+
+# 练习十九：递归目录找出目录下最大的文件名
+
+def max_file():
+    file_size = {}
+    for root, dir, files in os.walk('.'):
+
+        for file in files:
+            if os.path.isfile(file):
+                file_size[file] = f'{os.path.getsize(file) / 1000}kb'
+
+    print(file_size)
+
+
+# 练习二十：批量合并txt文件
+
+def merge_txt_file():
+    contents = []
+    for file in os.listdir('./Txt_file'):
+        file_path = f'./Txt_file/{file}'
+        if os.path.isfile(file_path):
+            with open(file_path) as fn:
+                contents.append(fn.read())
+    final_contents = "\n\n".join(contents)
+    with open("./Txt_file/combine", "w") as fout:
+        fout.write(final_contents)
+
+
+# 练习二十一：统计文件中学生兴趣对应人数
+def count_interest():
+    interest_num = {}
+    with open("./practice_file/interest_student") as fn:
+        for line in fn:
+            line = line[:-1]
+            name, interest_list = line.split(" ")
+            interest_list = interest_list.split("，")
+            for interest in interest_list:
+                if interest not in interest_num:
+                    interest_num[interest] = 0
+                interest_num[interest] += 1
+    print(interest_num)
+
+
+# 练习二十二:计算两个日期间相隔的天数
+import datetime
+
+
+def get_interval_day():
+    birthday = "1999-1-23"
+    birthday_time = datetime.datetime.strptime(birthday, "%Y-%m-%d")
+    now_time = datetime.datetime.now()
+    interval_time = now_time - birthday_time
+
+    print(interval_time.days / 365)
+
+
+# 练习二十三：计算任意天数前的日期
+def get_diff_days(pdata, days):
+    pdata_obj = datetime.datetime.strptime(pdata, "%Y-%m-%d")
+    time_gap = datetime.timedelta(days=days)
+    time_result = pdata_obj - time_gap
+    print(time_result.strftime("%Y-%m-%d"))
+
+
+def get_data_range(begin_data, end_data):
+    range_data = []
+    while begin_data <= end_data:
+        range_data.append(begin_data)
+        begin_data_obj = datetime.datetime.strptime(begin_data, "%Y-%m-%d")
+        data_gap = datetime.timedelta(days=1)
+        begin_data = begin_data_obj + data_gap
+        # begin_data = datetime.datetime.strftime(begin_data,"Y-%m-%d")
+    print(range_data)
 
 
 if __name__ == '__main__':
@@ -218,4 +314,11 @@ if __name__ == '__main__':
     # print(sorted(compute_word().items(), reverse=True, key=lambda x: x[1])[:10])
     # print(compute_size())
     # file_tidying()
-    compute_student_score()
+    # compute_student_score()
+    # course_teacher()
+    # max_file()
+    # merge_txt_file()
+    # count_interest()
+    # get_interval_day()
+    # get_diff_days("2022-7-1", 3)
+    get_data_range(begin_data="2022-6-25", end_data="2022-6-29")
