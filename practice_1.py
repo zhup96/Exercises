@@ -286,15 +286,17 @@ def get_diff_days(pdata, days):
     print(time_result.strftime("%Y-%m-%d"))
 
 
+#练习二十四：给定开始、结束日期输出中间日期
 def get_data_range(begin_data, end_data):
     range_data = []
     while begin_data <= end_data:
         range_data.append(begin_data)
         begin_data_obj = datetime.datetime.strptime(begin_data, "%Y-%m-%d")
         data_gap = datetime.timedelta(days=1)
-        begin_data = begin_data_obj + data_gap
-        # begin_data = datetime.datetime.strftime(begin_data,"Y-%m-%d")
+        begin_data = (begin_data_obj + data_gap).strftime("%Y-%m-%d")
     print(range_data)
+
+
 
 
 if __name__ == '__main__':
@@ -321,4 +323,4 @@ if __name__ == '__main__':
     # count_interest()
     # get_interval_day()
     # get_diff_days("2022-7-1", 3)
-    get_data_range(begin_data="2022-6-25", end_data="2022-6-29")
+    get_data_range(begin_data="2022-6-25", end_data="2022-7-1")
